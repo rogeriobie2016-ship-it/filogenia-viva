@@ -1,0 +1,97 @@
+{
+  "titulo": "Árvore simplificada dos Hymenoptera",
+  "fonte": "Peters et al. (2017)",
+  "como_editar": "Cada nó tem id (sem espaços nem acentos), nome, legenda e texto. Nós internos têm a lista 'filhos'. Campos opcionais: 'cientifico' e 'autor' (o nome científico sai em itálico), 'popular', 'nota', 'eussocial' (true marca grupos com espécies eussociais), 'destaque' (true marca os três grupos do jogo) e 'figura' (caba, formiga ou abelha). A ordem dos filhos é a ordem em que aparecem na árvore, de cima para baixo.",
+  "raiz": {
+    "id": "hymenoptera",
+    "nome": "Hymenoptera",
+    "legenda": "Raiz da árvore, cerca de 280 milhões de anos",
+    "texto": "Abelhas, formigas e vespas: mais de 153 mil espécies descritas. É uma das ordens megadiversas de insetos.",
+    "nota": "A vida social em colônias surgiu mais de uma vez nesta árvore, de forma independente. A maioria das abelhas e vespas é solitária.",
+    "filhos": [
+      {
+        "id": "vespas-serra",
+        "nome": "Vespas-serra",
+        "legenda": "Linhagens mais antigas (Symphyta, um grupo não natural)",
+        "texto": "Não têm a cintura fina. As larvas da maioria se alimentam de plantas. Ajudam a imaginar como eram os primeiros himenópteros."
+      },
+      {
+        "id": "apocrita",
+        "nome": "Apocrita",
+        "legenda": "O ramo da cintura fina",
+        "texto": "A ligação estreita entre tórax e abdômen dá flexibilidade ao corpo. Vespas, formigas e abelhas herdaram esse traço.",
+        "filhos": [
+          {
+            "id": "parasitoides",
+            "nome": "Vespas parasitoides",
+            "legenda": "Uma diversidade enorme, ainda pouco conhecida",
+            "texto": "Põem ovos em outros artrópodes, e as larvas se desenvolvem neles. Muitas são usadas no controle biológico de pragas."
+          },
+          {
+            "id": "aculeata",
+            "nome": "Aculeata",
+            "legenda": "Os himenópteros com ferrão",
+            "texto": "O ferrão é um ovipositor modificado: por isso só as fêmeas ferroam. Deste ramo saem as vespas sociais, as formigas e as abelhas.",
+            "nota": "A vida social em colônias surgiu mais de uma vez nesta árvore, de forma independente. A maioria das abelhas e vespas é solitária.",
+            "filhos": [
+              {
+                "id": "vespidae",
+                "nome": "Vespidae",
+                "popular": "caba-tatu",
+                "cientifico": "Synoeca surinama",
+                "autor": "(Linnaeus)",
+                "legenda": "A família da caba-tatu, vespa social amazônica",
+                "texto": "A caba-tatu constrói um ninho de papel, feito de fibra vegetal mastigada. O envelope lembra a carapaça de um tatu, daí o nome popular. Vespas também controlam lagartas e outros insetos.",
+                "eussocial": true,
+                "destaque": true,
+                "figura": "caba"
+              },
+              {
+                "id": "formigas-apoidea",
+                "nome": "Formigas + Apoidea",
+                "legenda": "Um ancestral comum mais recente",
+                "texto": "Pela árvore do DNA, formigas e abelhas são mais aparentadas entre si do que com as vespas sociais da família da caba-tatu (Peters et al., 2017).",
+                "filhos": [
+                  {
+                    "id": "formigas",
+                    "nome": "Formigas",
+                    "popular": "Formicidae",
+                    "legenda": "Formicidae, todas as espécies conhecidas vivem em colônias",
+                    "texto": "Reciclam matéria orgânica, arejam o solo e dispersam sementes. Nelas, a vida social surgiu de forma independente da das vespas e da das abelhas.",
+                    "eussocial": true,
+                    "destaque": true,
+                    "figura": "formiga"
+                  },
+                  {
+                    "id": "apoidea",
+                    "nome": "Apoidea",
+                    "legenda": "Vespas apoides e abelhas",
+                    "texto": "As abelhas surgiram de dentro deste grupo de vespas caçadoras. Por parentesco, toda abelha é um tipo de vespa.",
+                    "filhos": [
+                      {
+                        "id": "vespas-apoides",
+                        "nome": "Vespas apoides",
+                        "legenda": "Caçadoras, quase todas solitárias",
+                        "texto": "Abastecem os ninhos com presas para as larvas. São as parentes mais próximas das abelhas."
+                      },
+                      {
+                        "id": "abelhas",
+                        "nome": "Abelhas",
+                        "popular": "Anthophila",
+                        "legenda": "Anthophila, a maioria é solitária",
+                        "texto": "Trocaram a caça por pólen e néctar e se tornaram polinizadoras. Só parte delas é social, como as abelhas sem ferrão, que os Kayapó reconhecem e nomeiam em detalhe (Camargo; Posey, 1990).",
+                        "eussocial": true,
+                        "destaque": true,
+                        "figura": "abelha"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

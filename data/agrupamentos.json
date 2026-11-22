@@ -1,0 +1,45 @@
+{
+  "como_editar": "Cada modo tem id, nome, pergunta e grupos. Cada grupo tem titulo e membros. Em 'quem' use caba, formiga ou abelha. Só entram nomes populares já publicados.",
+  "aviso": "Nenhum agrupamento é o certo: cada um responde a uma pergunta diferente.",
+  "care": "Nesta fase usamos só nomes populares já publicados. Classificações de comunidades entram apenas com consentimento livre, prévio e informado e seguindo os princípios CARE de governança de dados indígenas (Carroll et al., 2020).",
+  "modos": [
+    {
+      "id": "ninho",
+      "nome": "Ninho",
+      "pergunta": "Onde mora e com o que constrói?",
+      "grupos": [
+        { "titulo": "Ninho de papel", "membros": [ { "quem": "caba", "nota": "fibra vegetal mastigada" } ] },
+        { "titulo": "Ninho no solo, na madeira ou em plantas", "membros": [ { "quem": "formiga", "nota": "depende da espécie" } ] },
+        { "titulo": "Ninho de cera, de resina, no solo ou em cavidades", "membros": [ { "quem": "abelha", "nota": "depende da espécie" } ] }
+      ]
+    },
+    {
+      "id": "ferroada",
+      "nome": "Ferroada",
+      "pergunta": "Ferroa ou não ferroa?",
+      "grupos": [
+        { "titulo": "Ferroam", "membros": [ { "quem": "caba", "nota": "só as fêmeas, com o ovipositor modificado" }, { "quem": "abelha", "nota": "muitas espécies, só as fêmeas" } ] },
+        { "titulo": "Mordem ou ferroam", "membros": [ { "quem": "formiga", "nota": "depende da espécie" } ] },
+        { "titulo": "Não ferroam", "membros": [ { "quem": "abelha", "nota": "abelhas sem ferrão, que têm o ferrão atrofiado" } ] }
+      ]
+    },
+    {
+      "id": "vida",
+      "nome": "Vida em grupo",
+      "pergunta": "Vive em colônia ou sozinha?",
+      "grupos": [
+        { "titulo": "Sempre em colônia", "membros": [ { "quem": "formiga", "nota": "todas as espécies conhecidas" } ] },
+        { "titulo": "Às vezes em colônia", "membros": [ { "quem": "caba", "nota": "a caba-tatu é social, mas a maioria das vespas é solitária" }, { "quem": "abelha", "nota": "a maioria das abelhas é solitária" } ] }
+      ]
+    },
+    {
+      "id": "nome",
+      "nome": "Nome",
+      "pergunta": "De onde vem o nome?",
+      "grupos": [
+        { "titulo": "“Caba”, do tupi, e “marimbondo”, do quimbundo", "membros": [ { "quem": "caba", "nota": "caba-tatu: o ninho lembra a carapaça de um tatu" } ] },
+        { "titulo": "Nomes em levantamento", "membros": [ { "quem": "formiga", "nota": "levantamento bibliográfico em andamento" }, { "quem": "abelha", "nota": "levantamento bibliográfico em andamento" } ] }
+      ]
+    }
+  ]
+}

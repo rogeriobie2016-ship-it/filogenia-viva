@@ -1,0 +1,117 @@
+/* Filogenia Viva: papel de ninho e risografia, com legendas de prancha.
+   Visual único de papel impresso, sem tema escuro por escolha. */
+:root {
+  color-scheme: light;
+  --papel: #ddd0b6;
+  --fibra: #c7b594;
+  --claro: #f3ebd9;
+  --tinta: #16130e;
+  --tinta2: #3d382e;
+  --mel: #e2a22b;
+  --terra: #a63a22;
+  --terra-txt: #8c2f1b; /* vermelho-terra para texto pequeno (contraste AA) */
+  --mata: #23513a;
+  --galho2: #8a7753;
+
+  --f-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --f-grot: 'Archivo Variable', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --f-mono: 'DM Mono', ui-monospace, Consolas, 'Liberation Mono', monospace;
+
+  --fibras: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='300'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .12' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .34 0 0 0 0 .22 1.15 0 0 0 -.43'/%3E%3C/filter%3E%3Crect width='1000' height='300' filter='url(%23f)'/%3E%3C/svg%3E");
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--fibras), var(--papel);
+  color: var(--tinta);
+  font-family: var(--f-grot);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, p, ol, ul, figure { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+svg { display: block; max-width: 100%; }
+img { max-width: 100%; }
+i, em { font-style: italic; }
+a { color: inherit; }
+button { font: inherit; color: inherit; cursor: pointer; border-radius: 0; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+.wrap {
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.pular {
+  position: absolute; left: 1rem; top: -4rem;
+  background: var(--tinta); color: var(--claro); padding: 0.6rem 0.9rem; z-index: 20;
+}
+.pular:focus { top: 0.6rem; }
+.so-leitor {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ---------- vozes tipográficas ---------- */
+/* etiqueta de cartaz: grotesca condensada em caixa alta */
+.caps {
+  font-stretch: 68%;
+  font-weight: 700;
+  font-size: 0.84rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+/* legenda de prancha: mono pequena, em vermelho-terra */
+.leg {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--terra-txt);
+  line-height: 1.35;
+}
+.sci { font-family: var(--f-display); font-size: 1.12em; letter-spacing: 0; }
+
+/* carimbo de status */
+.carimbo {
+  display: inline-block;
+  border: 2px solid var(--terra-txt);
+  color: var(--terra-txt);
+  padding: 0.28rem 0.6rem;
+  transform: rotate(-3deg);
+}
+.carimbo.mata { border-color: var(--mata); color: var(--mata); }
+.carimbo.dev { border-style: dashed; border-color: var(--tinta2); color: var(--tinta2); transform: rotate(2deg); }
+
+/* ---------- cabeçalho e rodapé ---------- */
+.cabeca .wrap {
+  display: flex; flex-wrap: wrap; gap: 0.3rem 1.5rem;
+  align-items: baseline; justify-content: space-between;
+  padding-block: 0.9rem 0.8rem;
+}
+.marca {
+  font-family: var(--f-display); font-size: 1.7rem; line-height: 1;
+  text-decoration: none; letter-spacing: -0.01em;
+}
+.escamas { width: 100%; height: 44px; border-block: 2px solid var(--tinta); }
+
+.rodape { border-top: 2px solid var(--tinta); margin-top: 4rem; }
+.rodape .wrap { padding-block: 1.4rem 2.2rem; display: grid; gap: 0.5rem; }
+.rodape p { font-size: 0.9rem; max-width: 70ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

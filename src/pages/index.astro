@@ -1,0 +1,235 @@
+---
+import Base from '../layouts/Base.astro';
+import dados from '../../data/tree.json';
+import grupos from '../../data/agrupamentos.json';
+import { bicho, pranchaCaba, LEGENDA_CABA } from '../lib/bichos.js';
+import { montarArvore } from '../lib/arvore.js';
+import '../styles/jogo1.css';
+
+const A = montarArvore(dados.raiz, { x0: 40, xF: 296 });
+const pct = (v, t) => `${((v / t) * 100).toFixed(3)}%`;
+const internos = A.nos.filter((n) => !n.folha);
+const raiz = A.nos[0];
+const inicial = A.nos.some((n) => n.id === 'aculeata') ? 'aculeata' : A.raizId;
+const atraso = (d) => `${(d * 0.3).toFixed(2)}s`;
+
+const TRIO = [
+  { id: 'caba', nome: 'Caba-tatu', sub: 'Synoeca surinama', sci: true },
+  { id: 'formiga', nome: 'Formiga', sub: 'Formicidae' },
+  { id: 'abelha', nome: 'Abelha', sub: 'Anthophila' },
+];
+const NOME = { caba: 'Caba-tatu', formiga: 'Formiga', abelha: 'Abelha' };
+---
+<Base
+  titulo="Árvore viva"
+  descricao="Quem veio primeiro? Um jogo para explorar a árvore evolutiva de abelhas, formigas e vespas da Amazônia, ao lado de outros modos de nomear e agrupar esses insetos."
+  prancha="Prancha I · Jogo 1"
+>
+  <section class="capa wrap">
+    <div class="capa-topo">
+      <h1>Quem veio primeiro?</h1>
+      <div class="capa-lado">
+        <p class="caps">Abelhas, formigas e vespas da Amazônia</p>
+        <p class="lede">Uma árvore evolutiva para explorar com as mãos: a filogenia dos Hymenoptera e outros modos de nomear e agrupar esses insetos, lado a lado.</p>
+      </div>
+    </div>
+
+    <div class="jogo" data-jogo1 data-ordem={JSON.stringify(A.ordem)} data-inicial={inicial}>
+      <header class="jogo-cab">
+        <h2 class="caps">Jogo 1 · Árvore viva</h2>
+        <span class="caps">Protótipo web</span>
+      </header>
+
+      <noscript><p class="passo">Este jogo precisa de JavaScript ativado no navegador.</p></noscript>
+
+      <!-- ============ passo 1: a pergunta ============ -->
+      <div class="passo passo1" data-passo="1">
+        <div class="p1-figs">
+          <div class="trio">
+            {TRIO.map((t, i) => (
+              <figure>
+                <div set:html={bicho(t.id, 'riso')} />
+                <figcaption>
+                  <span class="leg">Fig. {i + 1}</span>
+                  <span class="caps">{t.nome}</span>
+                  <small>{t.sci ? <i>{t.sub}</i> : t.sub}</small>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <div class="ramo" data-ramo hidden>
+            <svg viewBox="0 0 600 160" aria-hidden="true">
+              <path pathLength="1" d="M300,4 C300,44 384,40 400,72" />
+              <path pathLength="1" d="M500,4 C500,44 416,40 400,72" />
+              <path pathLength="1" style="--d:.6s" d="M400,72 C398,104 306,104 250,122" />
+              <path pathLength="1" style="--d:.6s" d="M100,4 C100,66 196,104 250,122" />
+              <path pathLength="1" style="--d:1.2s" d="M250,122 V154" />
+              <circle style="--d:.6s" cx="400" cy="72" r="10" />
+              <circle style="--d:1.2s" cx="250" cy="122" r="10" />
+            </svg>
+            <span class="rot-no caps" style="--d:.8s;left:66.67%;top:38%;max-width:30%">Formigas + Apoidea</span>
+            <span class="rot-no rot-raiz caps" style="--d:1.4s;left:41.67%">Aculeata, os que têm ferrão</span>
+          </div>
+        </div>
+
+        <div class="p1-lado">
+          <h3 class="pergunta">Destes três, quais são os parentes mais próximos?</h3>
+          <p class="sub">Escolha um par. Pense em quem divide o ancestral comum mais recente.</p>
+          <div class="ops" role="group" aria-label="Escolha o par de parentes mais próximos">
+            <button class="op" id="op-cf" data-par="cf">Caba-tatu e formiga</button>
+            <button class="op" id="op-ca" data-par="ca">Caba-tatu e abelha</button>
+            <button class="op" id="op-fa" data-par="fa">Formiga e abelha</button>
+          </div>
+          <div class="veredito" data-veredito tabindex="-1" hidden>
+            <span class="carimbo caps">Parentes mais próximos</span>
+            <p class="ver-txt" data-veredito-texto></p>
+            <p>Nenhum dos três veio primeiro: os três são primos vivos hoje. O ancestral comum deles era uma vespa. As abelhas são vespas que passaram a alimentar as larvas com pólen.</p>
+            <div class="acoes">
+              <button class="btn caps" id="abrir-arvore" data-abrir>Abrir a árvore</button>
+              <button class="btn-fio caps" id="jogar-de-novo" data-denovo>Jogar de novo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ passo 2: a árvore e os outros modos ============ -->
+      <div class="passo passo2" data-passo="2" hidden>
+        <div class="modos" role="tablist" aria-label="Modo de agrupar">
+          <button class="caps" role="tab" id="aba-dna" aria-selected="true" aria-controls="painel-dna" data-aba="dna">Árvore do DNA</button>
+          <button class="caps" role="tab" id="aba-outros" aria-selected="false" aria-controls="painel-outros" data-aba="outros" tabindex="-1">Outros modos de agrupar</button>
+        </div>
+
+        <div class="painel-dna" role="tabpanel" id="painel-dna" aria-labelledby="aba-dna" data-painel="dna">
+          <div class="arv-col">
+            <p class="leg">Fig. 4 · {dados.titulo}, segundo {dados.fonte}</p>
+            <div class="arvore" style={`aspect-ratio:${A.W}/${A.H}`}>
+              <svg viewBox={`0 0 ${A.W} ${A.H}`} aria-hidden="true">
+                <path pathLength="1" d={`M0,${raiz.y} H${raiz.x}`} stroke="var(--terra)" stroke-width="15" />
+                {A.ramos.map((r) => (
+                  <path
+                    pathLength="1"
+                    d={r.caminho}
+                    stroke={r.forte ? 'var(--terra)' : 'var(--galho2)'}
+                    stroke-width={r.w}
+                    style={`--d:${atraso(r.d - 0.6)}`}
+                  />
+                ))}
+              </svg>
+              {A.nos.map((n) =>
+                n.folha ? (
+                  <button
+                    class:list={['no', 'no-folha', { eu: n.eussocial }]}
+                    id={`no-${n.id}`}
+                    data-no={n.id}
+                    data-pai={n.pai}
+                    aria-pressed="false"
+                    style={`left:${pct(n.x, A.W)};top:${pct(n.y, A.H)};--x:${pct(n.x, A.W)};--d:${atraso(n.d + 0.4)}`}
+                  >
+                    <span class="no-alvo"><span class="no-ponto" /></span>
+                    <span class="no-txt">
+                      <span class="no-nome caps">{n.nome}</span>
+                      {n.popular && <span class="no-sub">{n.popular}</span>}
+                      {n.eussocial && <span class="so-leitor">, grupo com espécies eussociais</span>}
+                    </span>
+                  </button>
+                ) : (
+                  <button
+                    class="no no-int"
+                    id={`no-${n.id}`}
+                    data-no={n.id}
+                    data-pai={n.pai}
+                    data-filho={n.filhos[0]}
+                    aria-pressed="false"
+                    style={`left:${pct(n.x, A.W)};top:${pct(n.y, A.H)};--d:${atraso(n.d + 0.4)}`}
+                  >
+                    <span class="no-ponto">{n.num}</span>
+                    <span class="so-leitor">{n.nome}</span>
+                  </button>
+                )
+              )}
+            </div>
+            <ol class="arv-leg">
+              {internos.map((n) => <li><b>{n.num}</b> {n.nome}</li>)}
+            </ol>
+            <p class="arv-chave"><span class="no-ponto eu-amostra" aria-hidden="true" /> Anel duplo: grupos com espécies eussociais.</p>
+            <p class="arv-ajuda">Toque em um nó ou em um nome para ler. No teclado, use as setas e Enter.</p>
+          </div>
+
+          <div class="fichas" aria-live="polite">
+            {A.nos.map((n) => (
+              <article class="ficha" data-ficha={n.id} hidden>
+                <p class="leg">{n.folha ? 'Ponta de ramo' : `Nó ${n.num}`}</p>
+                <h3>{n.nome}</h3>
+                {n.cientifico && (
+                  <p class="ficha-sci"><i class="sci">{n.cientifico}</i> {n.autor}, {n.popular}</p>
+                )}
+                <p class="caps ficha-leg">{n.legenda}</p>
+                {n.figura === 'caba' && (
+                  <figure class="ficha-fig">
+                    <div set:html={pranchaCaba()} />
+                    <figcaption>
+                      <span class="leg">Fig. 5 · vista dorsal</span>
+                      <ol>
+                        {LEGENDA_CABA.map((l, i) => <li><i>{i + 1}</i><span>{l}</span></li>)}
+                      </ol>
+                    </figcaption>
+                  </figure>
+                )}
+                {n.figura && n.figura !== 'caba' && (
+                  <figure class="ficha-fig riso"><div set:html={bicho(n.figura, 'riso')} /></figure>
+                )}
+                <p>{n.texto}</p>
+                {n.nota && <p class="ficha-nota">{n.nota}</p>}
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="outros" role="tabpanel" id="painel-outros" aria-labelledby="aba-outros" data-painel="outros" hidden>
+          <p class="outros-aviso">A mesma caba-tatu, a mesma formiga e a mesma abelha, agrupadas por outros critérios. {grupos.aviso}</p>
+          <div class="chips" role="group" aria-label="Critério de agrupamento">
+            {grupos.modos.map((m, i) => (
+              <button class="chip caps" id={`chip-${m.id}`} data-modo={m.id} aria-pressed={i === 0 ? 'true' : 'false'}>{m.nome}</button>
+            ))}
+          </div>
+          {grupos.modos.map((m, i) => (
+            <section class="modo" data-modo-painel={m.id} hidden={i !== 0}>
+              <h3 class="modo-perg">{m.pergunta}</h3>
+              <div class="grupos">
+                {m.grupos.map((g, j) => (
+                  <div class="grupo" style={`--i:${j}`}>
+                    <h4 class="caps">{g.titulo}</h4>
+                    <ul>
+                      {g.membros.map((mb) => (
+                        <li>
+                          <span class="mb-fig" set:html={bicho(mb.quem, 'riso', { decorativo: true })} />
+                          <span><b class="caps">{NOME[mb.quem]}</b><small>{mb.nota}</small></span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+          <p class="care"><span class="leg">Nota sobre os nomes</span>{grupos.care}</p>
+        </div>
+
+        <div class="p2-pe">
+          <button class="btn-fio caps" id="recomecar" data-recomecar>Recomeçar</button>
+          <span class="carimbo dev caps">Modo em realidade aumentada: em desenvolvimento</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="notas">
+      <div><p class="leg">Nota 1 · Como ler</p><p>Cada bifurcação é um ancestral comum. Quanto mais perto das pontas dois ramos se juntam, mais próximo é o parentesco.</p></div>
+      <div><p class="leg">Nota 2 · Fonte</p><p>Os grupos e as relações seguem Peters et al. (2017). A árvore foi simplificada: mostra seis ramos de uma ordem com mais de 153 mil espécies descritas.</p></div>
+      <div><p class="leg">Nota 3 · Estado</p><p>Protótipo web jogável. O modo em realidade aumentada está em desenvolvimento.</p></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../scripts/jogo1.js';
+</script>
